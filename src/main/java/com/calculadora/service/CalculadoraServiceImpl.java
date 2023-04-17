@@ -1,5 +1,6 @@
 package com.calculadora.service;
 
+import com.calculadora.exception.OperacionInvalidaException;
 import com.calculadora.util.Operaciones;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class CalculadoraServiceImpl implements CalculadoraService{
             case "resta":
                return Operaciones.resta(operandos);
             default:
-                throw new RuntimeException();
+                throw new OperacionInvalidaException("La operacion " +  operador + " no está permitida");
         }
         
     }

@@ -1,6 +1,7 @@
 package com.calculadora.controller;
 
 import com.calculadora.service.CalculadoraService;
+import io.corp.calculator.TracerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,15 @@ public class CalculadoraController {
 
    @Autowired
    CalculadoraService calculadoraService;
-    
+   
     @GetMapping(value = "/calculo")
     public ResponseEntity<BigDecimal> calcula(@RequestParam(name = "operando") List<BigDecimal> operandos,
                                           @RequestParam(name = "operacion") String operacion) {
-
+                
         BigDecimal resultado = calculadoraService.calcular(operandos, operacion);
+        
+        TracerImpl tracer = new TracerImpl();
+        tracer.trace(resultado);
         
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }

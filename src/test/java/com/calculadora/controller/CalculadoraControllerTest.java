@@ -1,5 +1,6 @@
 package com.calculadora.controller;
 
+import io.corp.calculator.TracerImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class CalculadoraControllerTest {
 
     @Autowired
     private CalculadoraController calculadoraController;
-
+    
     @Test
     void calculaSumaTest() {
         // Preparación de datos de prueba

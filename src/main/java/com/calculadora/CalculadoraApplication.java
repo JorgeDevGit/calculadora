@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@SpringBootApplication(scanBasePackages = {"com.calculadora.controller","com.calculadora.service"})
+@SpringBootApplication(scanBasePackages = {"com.calculadora.controller","com.calculadora.service","com.calculadora.exception"})
 public class CalculadoraApplication {
 	
 	public static void main(String[] args) {
