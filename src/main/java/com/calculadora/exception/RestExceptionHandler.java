@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class RestExceptionHandler {
 
@@ -17,4 +19,13 @@ public class RestExceptionHandler {
         return error;
     }
 
+    @ExceptionHandler({ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleMethodConstraintViolation(ConstraintViolationException e) {
+        ErrorDto error = new ErrorDto();
+        error.setMensaje("Request incorrecta: " + e.getMessage());
+        error.setTraza(e.getStackTrace());
+        return error;
+    }
+    
 }
