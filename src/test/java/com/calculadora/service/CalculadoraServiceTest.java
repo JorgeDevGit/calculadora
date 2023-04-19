@@ -1,65 +1,58 @@
 package com.calculadora.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import com.calculadora.exception.OperacionInvalidaException;
+import com.calculadora.factory.OperacionFactory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
 class CalculadoraServiceTest {
 
-    private CalculadoraService calculadoraService;
+  @Autowired
+  OperacionFactory operacionFactory;
 
-    @BeforeEach
-    void setUp() {
-        calculadoraService = new CalculadoraServiceImpl();
-    }
+  @Autowired
+  CalculadoraServiceImpl calculadoraService;
 
-    @Test
-    void deberiaSumarDosNumeros() {
-        // Preparación de datos de prueba
-        List<BigDecimal> operandos = new ArrayList<>();
-        operandos.add(BigDecimal.valueOf(2));
-        operandos.add(BigDecimal.valueOf(3.5));
-        String operador = "suma";
+  @Test
+  void deberiaSumarDosNumeros() {
+    // Preparación de datos de prueba
+    List<BigDecimal> operandos = Arrays.asList(new BigDecimal("2"), new BigDecimal("3"));
 
-        // Ejecución del método a probar
-        BigDecimal resultado = calculadoraService.calcular(operandos, operador);
+    // Ejecución del método a probar
+    BigDecimal resultado = calculadoraService.calcular(operandos, "suma");
 
-        // Comprobación del resultado
-        BigDecimal resultadoEsperado = BigDecimal.valueOf(5.5);
-        Assertions.assertEquals(resultadoEsperado, resultado, "La suma de 2 y 3.5 debería ser 5.5");
-    }
+    // Comprobación del resultado
+    Assertions.assertEquals(new BigDecimal("5"), resultado);
+  }
 
-    @Test
-    void deberiaRestarDosNumeros() {
-        // Preparación de datos de prueba
-        List<BigDecimal> operandos = new ArrayList<>();
-        operandos.add(BigDecimal.valueOf(7.5));
-        operandos.add(BigDecimal.valueOf(4));
-        String operador = "resta";
+  @Test
+  void deberiaRestarDosNumeros() {
+    // Preparación de datos de prueba
+    List<BigDecimal> operandos = Arrays.asList(new BigDecimal("5"), new BigDecimal("3"));
 
-        // Ejecución del método a probar
-        BigDecimal resultado = calculadoraService.calcular(operandos, operador);
+    // Ejecución del método a probar
+    BigDecimal resultado = calculadoraService.calcular(operandos, "resta");
 
-        // Comprobación del resultado
-        BigDecimal resultadoEsperado = BigDecimal.valueOf(3.5);
-        Assertions.assertEquals(resultadoEsperado, resultado, "La resta de 7.5 y 4 debería ser 3.5");
-    }
+    // Comprobación del resultado
+    Assertions.assertEquals(new BigDecimal("2"), resultado);
+  }
 
-    @Test
-    void deberiaLanzarExcepcionCuandoSeUsaOperadorInvalido() {
-        // Preparación de datos de prueba
-        List<BigDecimal> operandos = new ArrayList<>();
-        operandos.add(BigDecimal.valueOf(2));
-        operandos.add(BigDecimal.valueOf(3.5));
-        String operadorInvalido = "operador-invalido";
+  @Test
+  void deberiarlanzarExcepcion() {
+    // Preparación de datos de prueba
+    String operador = "multiplicacion";
 
-        // Ejecución del método a probar y comprobación de la excepción
-        Assertions.assertThrows(RuntimeException.class, () -> calculadoraService.calcular(operandos, operadorInvalido));
-    }
+    // Ejecución del método a probar y comprobación del resultado
+    assertThatThrownBy(() -> operacionFactory.crearOperacion(operador))
+            .isInstanceOf(OperacionInvalidaException.class)
+            .hasMessageContaining("Operacion invalida: " + operador);
+  }
 }
