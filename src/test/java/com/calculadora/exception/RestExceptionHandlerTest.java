@@ -22,7 +22,7 @@ class RestExceptionHandlerTest {
     
     mockMvc.perform(MockMvcRequestBuilders.get("/api/calculo")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{ \"operador\": \"suma\" }"))
+            .content("{ \"operador\": \"multiplicacion\" }"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
