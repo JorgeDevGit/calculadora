@@ -22,15 +22,15 @@ A continuación se indican las dependencias utilizadas en el proyecto:
 - _spring-boot-starter-web_: una dependencia que proporciona las funcionalidades para construir aplicaciones web usando Spring Boot. Incluye Tomcat como servidor embebido.
 - _spring-boot-starter-validation_: una dependencia que agrega soporte para la validación de datos en Spring y otros componentes de Spring, utilizando las anotaciones de validación.
 - _spring-boot-starter-test_: una dependencia que proporciona un conjunto de librerías para escribir pruebas unitarias y de integración en Spring Boot, incluyendo JUnit, Mockito, y más.
-- _io.corp.calculator:tracer_: una dependencia externa que, que se instala localmente a través del plugin de Maven Install. Esta librería puede ser una herramienta de rastreo de la ejecución del código que puede ser usada para la resolución de problemas y para el análisis de rendimiento.
+- _io.corp.calculator:tracer_: una dependencia externa que se instala localmente a través del plugin de Maven Install. Esta librería puede ser una herramienta de rastreo de la ejecución del código que puede ser usada para la resolución de problemas y para el análisis de rendimiento.
 
 Además, hay tres plugins de construcción:
 - _spring-boot-maven-plugin_: un plugin que proporciona soporte para la creación de un archivo ejecutable (jar) para Spring Boot, lo que significa que puede ser ejecutado como una aplicación independiente sin necesidad de un servidor de aplicaciones externo.
-- _maven-install-plugin_: un plugin que permite instalar una dependencia que no se encuentra en un repositorio Maven local o remoto, en el repositorio local de Maven. En este caso, se usa para instalar la librería "tracer" localmente.
+- _maven-install-plugin_: un plugin que permite instalar una dependencia, que no se encuentra en un repositorio Maven local o remoto, en el repositorio local de Maven. En este caso, se usa para instalar la librería "tracer" localmente.
 - _jacoco-maven-plugin_: un plugin que se utiliza para la generación de un informe de cobertura de código que muestra la cantidad de código que se ejecutó durante las pruebas. Se puede consultar el informe en la ruta "target\site\jacoco\index.html"
 
 ## Funcionalidades implementadas y alcance del servicio 
-El proyecto implementa una API REST que proporciona una funcionalidad de calculadora básica. La API tiene un endpoint calculo que acepta dos parámetros: una lista de n operandos y una cadena que indica la operación a realizar.
+El proyecto implementa una API REST que proporciona una funcionalidad de calculadora básica. La API tiene un endpoint "calculo" que acepta dos parámetros: una lista de n operandos y una cadena que indica la operación a realizar.
 
 Para realizar el cálculo, se utiliza una interfaz Operacion que tiene un método calcular que acepta una lista de operandos y devuelve el resultado de la operación. Las clases Suma y Resta implementan la interfaz Operacion y se utilizan para realizar las operaciones de suma y resta, respectivamente.
 
