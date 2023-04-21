@@ -15,6 +15,8 @@ Dentro de "src/main", hay varias carpetas que tienen un propósito específico e
 - La carpeta "util" contiene clase TracerConfiguration, para registrar el resultado de la operación.
 - La carpeta "resources" los archivos de configuración de la aplicación
 
+Existe también la carpeta "lib" en el mismo nivel que "src" y "target", donde se guarda la librería local 'tracer' para utilizarla desde maven/pom.
+
 ![imagen](https://user-images.githubusercontent.com/115168729/233434974-4c778540-abcb-4146-8aa2-59f109fac0ea.png)
 
 ## Dependencias
