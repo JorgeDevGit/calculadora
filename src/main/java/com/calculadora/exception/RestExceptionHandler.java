@@ -1,6 +1,6 @@
 package com.calculadora.exception;
 
-import com.calculadora.util.TracerConfiguration;
+import io.corp.calculator.TracerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,12 +13,12 @@ import javax.validation.ConstraintViolationException;
 public class RestExceptionHandler {
 
     @Autowired
-    TracerConfiguration tracerConfiguration;
+    TracerImpl tracer;
     
      @ExceptionHandler(OperacionInvalidaException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto handleOperacionInvalidaException(OperacionInvalidaException e) {
-         tracerConfiguration.getTracerImpl().trace("Se ha producido un error al procesar la petición: " + e.getMessage());
+         tracer.trace("Se ha producido un error al procesar la petición: " + e.getMessage());
         ErrorDto error = new ErrorDto();
         error.setMensaje("Operación inválida: " + e.getMessage());
         error.setTraza(e.getStackTrace());
@@ -28,7 +28,8 @@ public class RestExceptionHandler {
     @ExceptionHandler({ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto handleMethodConstraintViolation(ConstraintViolationException e) {
-        tracerConfiguration.getTracerImpl().trace("Se ha producido un error al procesar la petición: " + e.getMessage());
+        tracer.trace("Se ha producido un error al procesar la petición: " + e.getMessage());
+                
         ErrorDto error = new ErrorDto();
         error.setMensaje("Request incorrecta: " + e.getMessage());
         error.setTraza(e.getStackTrace());

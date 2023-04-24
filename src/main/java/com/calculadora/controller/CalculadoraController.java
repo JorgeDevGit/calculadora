@@ -1,7 +1,12 @@
 package com.calculadora.controller;
 
 import com.calculadora.service.CalculadoraService;
-import com.calculadora.util.TracerConfiguration;
+import io.corp.calculator.TracerImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +30,21 @@ public class CalculadoraController {
    CalculadoraService calculadoraService;
    
    @Autowired
-    TracerConfiguration tracerConfiguration;
-   
+    TracerImpl tracer;
+
+    @Operation(summary = "Realiza una operación matemática con los operandos especificados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente",content = @Content),
+            @ApiResponse(responseCode = "400", description = "Los parámeteros introducidos no son correctos.",
+                    content = @Content) })  
     @GetMapping(value = "/calculo")
-    public ResponseEntity<BigDecimal> calcula(@NotEmpty @RequestParam(name = "operando")  List<BigDecimal> operandos,
-                                              @NotBlank @RequestParam(name = "operacion") String operacion) {
+    public ResponseEntity<BigDecimal> calcula(@Parameter(description = "Lista de números a utilizar en la operación")
+                                                  @NotEmpty @RequestParam(name = "operando")  List<BigDecimal> operandos,
+                                              @Parameter(description = "Tipo de operación a realizar: suma, resta")
+                                               @NotBlank @RequestParam(name = "operacion") String operacion) {
  
         BigDecimal resultado = calculadoraService.calcular(operandos, operacion);
-        tracerConfiguration.getTracerImpl().trace(resultado);
+        tracer.trace(resultado);
         
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }

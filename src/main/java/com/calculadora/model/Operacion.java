@@ -1,4 +1,4 @@
-package com.calculadora.service;
+package com.calculadora.model;
 
 import java.math.BigDecimal;
 import java.util.List;

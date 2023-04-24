@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.calculadora.model.Resta;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+
 class RestaTest {
   private final Resta resta = new Resta();
   @Test

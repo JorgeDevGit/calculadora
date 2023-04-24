@@ -1,6 +1,7 @@
 package com.calculadora.service;
 
 import com.calculadora.factory.OperacionFactory;
+import com.calculadora.model.Operacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
