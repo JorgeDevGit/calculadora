@@ -11,19 +11,21 @@ Dentro de "src/main", hay varias carpetas que tienen un propósito específico e
 - La carpeta "controller" contiene las clases de controladores o endpoints de la aplicación, que son los encargados de recibir las solicitudes HTTP y proporcionar las respuestas correspondientes.
 - La carpeta "exception" contiene las clases de excepciones personalizadas que se lanzan cuando ocurre algún error en la aplicación. Además contiene la clase RestExceptionHandler que es un controlador de excepciones.
 - La carpeta "factory" contiene la clase "OperacionFactory", que es una fábrica de objetos encargada de crear instancias de las clases que implementan la interfaz "Operacion".
-- La carpeta "service" contiene las clases que definen la lógica de negocio de la aplicación. En este caso, la calculadora realiza operaciones matemáticas y las clases que implementan la interfaz "Operacion" son las encargadas de realizar los cálculos.
+- La carpeta "service" contiene las clases que definen la lógica de negocio de la aplicación. 
+- La carpeta "model" contiene las clases que realizan la operación. La interfaz "Operacion" y las clases que la implmentan.
 - La carpeta "util" contiene clase TracerConfiguration, para registrar el resultado de la operación.
 - La carpeta "resources" los archivos de configuración de la aplicación
 
 Existe también la carpeta "lib" en el mismo nivel que "src" y "target", donde se guarda la librería local 'tracer' para utilizarla desde maven/pom.
 
-![imagen](https://user-images.githubusercontent.com/115168729/233434974-4c778540-abcb-4146-8aa2-59f109fac0ea.png)
+![imagen](https://user-images.githubusercontent.com/115168729/234116758-03c0578d-4b96-4e2d-8b64-095732c8564c.png)
 
 ## Dependencias
 A continuación se indican las dependencias utilizadas en el proyecto:
 - _spring-boot-starter-web_: una dependencia que proporciona las funcionalidades para construir aplicaciones web usando Spring Boot. Incluye Tomcat como servidor embebido.
 - _spring-boot-starter-validation_: una dependencia que agrega soporte para la validación de datos en Spring y otros componentes de Spring, utilizando las anotaciones de validación.
 - _spring-boot-starter-test_: una dependencia que proporciona un conjunto de librerías para escribir pruebas unitarias y de integración en Spring Boot, incluyendo JUnit, Mockito, y más.
+- _springdoc-openapi-ui_: una dependencia  que proporciona herramientas para documentar y exponer la API.
 - _io.corp.calculator:tracer_: una dependencia externa que se instala localmente a través del plugin de Maven Install. Esta librería puede ser una herramienta de rastreo de la ejecución del código que puede ser usada para la resolución de problemas y para el análisis de rendimiento.
 
 Además, hay tres plugins de construcción:
@@ -34,12 +36,17 @@ Además, hay tres plugins de construcción:
 ## Funcionalidades implementadas y alcance del servicio 
 El proyecto implementa una API REST que proporciona una funcionalidad de calculadora básica. La API tiene un endpoint "calculo" que acepta dos parámetros: una lista de n operandos y una cadena que indica la operación a realizar.
 
-Para realizar el cálculo, se utiliza una interfaz Operacion que tiene un método calcular que acepta una lista de operandos y devuelve el resultado de la operación. Las clases Suma y Resta implementan la interfaz Operacion y se utilizan para realizar las operaciones de suma y resta, respectivamente.
+Para realizar el cálculo, se utiliza una interfaz **Operacion** que tiene un método calcular que acepta una lista de operandos y devuelve el resultado de la operación. Las clases Suma y Resta implementan la interfaz Operacion y se utilizan para realizar las operaciones de suma y resta, respectivamente.
 
-La clase OperacionFactory es una clase auxiliar que crea instancias de objetos Operacion en función del parámetro de operación recibido en el endpoint calculo. Si el parámetro no es suma o resta, se lanza una excepción OperacionInvalidaException. 
-La fábrica se encarga de devolver la instancia adecuada de Operacion según el operador recibido. De esta manera, se puede agregar nuevas implementaciones de Operacion sin modificar el código de la clase CalculadoraServiceImpl.
+La clase **OperacionFactory** es una clase auxiliar que crea instancias de objetos Operacion. Se le ha agregado la anotación @Component para que Spring pueda detectarla automáticamente y crear una instancia única en el contexto de la aplicación.
 
-La clase CalculadoraServiceImpl es una implementación de la interfaz CalculadoraService, que utiliza la clase OperacionFactory para obtener una instancia de Operacion y realizar el cálculo con los operandos recibidos.
+En el constructor, inyectamos una lista de todas las implementaciones de la interfaz Operacion disponibles en el contexto de Spring. A partir de ella, construimos el mapa operaciones, donde la clave es el nombre de la clase en minúsculas y el valor es la instancia correspondiente.
+
+Luego, en el método crearOperacion, buscamos la implementación correspondiente en el mapa a partir del operador recibido como parámetro en minúsculas. Si la implementación no está disponible, se lanza una excepción OperacionInvalidaException.
+
+Con esta implementación, si se agregan nuevas implementaciones de Operacion en el futuro, no será necesario modificar la clase OperacionFactory. Spring detectará automáticamente las nuevas implementaciones y las agregará a la lista inyectada en el constructor, actualizando así el mapa operaciones.
+
+La clase **CalculadoraServiceImpl** es una implementación de la interfaz CalculadoraService, que utiliza la clase OperacionFactory para obtener una instancia de Operacion y realizar el cálculo con los operandos recibidos.
 
 Como se comentaba anteriormente, el servicio gestiona también los errores cuando se introducen parámetros incorrectos o no válidos. Si se introduce una operación no válida, se devuelve un error 400 Bad Request con un mensaje de error que indica que la operación no es válida. Si se omiten los operandos, se devuelve un error 400 Bad Request con un mensaje de error que indica que los operandos no son válidos.
 
