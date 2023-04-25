@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class CalculadoraControllerTest {
+class CalculadoraControllerTest {
 
     @Mock
     private CalculadoraService calculadoraService;

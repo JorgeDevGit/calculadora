@@ -19,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 
 
 class OperacionFactoryTest {
-
   private OperacionFactory operacionFactory;
 
   @Mock
@@ -29,7 +28,7 @@ class OperacionFactoryTest {
   private Operacion resta;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  public void setUp() {
     MockitoAnnotations.openMocks(this);
     //Si se pasan Suma y Resta mockeadas al constructor se crean con una key en el mapa distinta al nombre de la clase, 
     // lo que provoca que siempre lance un OperacionInvalidaException

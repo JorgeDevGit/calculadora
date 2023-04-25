@@ -1,17 +1,17 @@
-package com.calculadora.service;
+package com.calculadora.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import com.calculadora.model.Resta;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+class SumaTest {
 
-class RestaTest {
-  private final Resta resta = new Resta();
+  private final Suma suma = new Suma();
+
   @Test
   void calcularDosOperandosCorrectamente() {
     // Preparación de datos de prueba
@@ -20,10 +20,10 @@ class RestaTest {
     List<BigDecimal> operandos = Arrays.asList(primerOperando, segundoOperando);
 
     // Ejecución del método a probar
-    BigDecimal resultado = resta.calcular(operandos);
+    BigDecimal resultado = suma.calcular(operandos);
 
     // Comprobación del resultado
-    assertEquals(new BigDecimal("2"), resultado);
+    assertEquals(new BigDecimal("8"), resultado);
   }
 
   @Test
@@ -35,10 +35,10 @@ class RestaTest {
     List<BigDecimal> operandos = Arrays.asList(primerOperando, segundoOperando, tercerOperando);
 
     // Ejecución del método a probar
-    BigDecimal resultado = resta.calcular(operandos);
+    BigDecimal resultado = suma.calcular(operandos);
 
     // Comprobación del resultado
-    assertEquals(new BigDecimal("5"), resultado);
+    assertEquals(new BigDecimal("15"), resultado);
   }
   
 }
